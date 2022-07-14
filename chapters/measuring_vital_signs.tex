@@ -5,5 +5,35 @@
 % - The unwrapping of the phase signal
 % - The two different bandpass filters
 % - The peak counting
+Some general explanation about the chapter.
 
-Chapter about vital sign extraction.
+\section{Phase signal}
+% - explain the parameters send to the chip
+% - explain the accuracy from these parameters
+% - explain that is not enough to measure vital signs
+% - explain the phase of the signal 
+% - explain phase extraction
+For accurate vital signs extraction and waveform analysis, the phase of the radar signal is needed. This section explains why the phase signal is needed and how it can be extracted.
+
+\subsection{Radar parameters}
+Like mentioned in~\ref{sec:mmwave_tech}, every time the IWR6843 is restarted, a lot of parameters get send from the computer to properly setup different parts of the chip. An important part of these parameters are the chirp designs. These parameters among others determine the length of the chirp, the frequency range of the chirp and how many chirps are in one frame. The part of the parameters file which sets up the chirps and the frames can be found in Listing~\ref{lst:parameters}. To better understand how we can extract the vital signs from the radar data, we need to know what the resolution of the data is.
+
+\begin{lstlisting}[label=lst:parameters, caption=Portion of the parameters file which gets send to the IWR6843 to set it up.]
+...
+profileCfg 0 60 250 10 40 0 0 98 1 64 2200 0 0 40
+frameCfg 0 1 168 0 250 1 0
+chirpCfg 0 0 0 0 0 0 0 1
+chirpCfg 1 1 0 0 0 0 0 4
+...
+\end{lstlisting}
+
+The 
+
+To determine the range resolution for the parameters used in this project, we make use of the formula provided by TI \cite{range_est_training_website}:
+
+\begin{equation}
+d_{res} = \frac{c}{2 B}
+\label{eq:range_res_equation}
+\end{equation}
+
+where $B$ is the slope of the chirp in MHz/$\mu$S, and $c$ is the speed of light. 

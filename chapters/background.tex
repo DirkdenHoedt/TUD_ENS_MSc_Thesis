@@ -11,8 +11,23 @@ In this chapter, the background and related work is discussed. In Section~\ref{s
 % - mmWave technology
 % - chirps
 % - FFTs
+\subsection{Vital sign detection methods}
+In this section, a short summary is given about the most common vital signs monitoring systems, and the pro's and cons of each method.
+
+\subsubsection{SpO2 sensors}
+The most well known method for measuring heart rate is using a SpO2 sensor. In \cite{sinex1999pulse} the principle of this way of measuring heart rate is explained. In essence, there are two types of SpO2 sensors, the transmission method and the reflection method. The reflection method is most commonly found on fitness watches and smartwatches. In this setup, the LED and the photo-detector are next to each other. This method makes use of the reflecting properties of the human finger. When the heart beats, more blood is flowing in the finger, and more light is reflected from the LED to the detector. The transmission method is based on the permeable properties of the human finger. The LED is on one side of the finger, the detector is on the other side of the finger. When the heart beats, more blood is present in the finger, and less light is transmitted from the LED through the finger to the detector. Using this principle the heart rate can be measured. This way of measuring is most commonly seen in medical grade equipment.
+
+In more recent research \cite{motin2019selection}, the pulse oximeter sensor can also be used to estimate the breathing rate of a patient. 
+
+\subsubsection{ECG monitoring}
+Electrocardiogram (ECG) monitoring is a more advanced way of monitoring someones heart rate \cite{berkaya2018survey}. The machine detects and monitors the electrical pulses the heart muscles generate while contracting and relaxing. Not only the heart rate can be monitored, but also the order of muscle contraction and the muscle power can be determined, which is beyond the scope of this project. Because the chest also moves using muscles when breathing, the breathing rate can also be determined using some additional processing \cite{charlton2017breathing}.
+
+\subsubsection{Vital signs monitoring using radar}
+Radar assisted vital signs monitoring is a relatively new research topic. A lot of research is still going on and real world implementations are still very scarce. In Section~\ref{sec:related_work} a overview of the research related to this thesis project is given.  
+
 \subsection{mmWave technology}
-The type of radar used in this project is the \emph{Texas Instruments IWR6843ISK}, see Figure~\ref{fig:iwr6843isk}. This is a FMCW (Frequency Modulated Continuous Wave) radar. It uses short-wavelength elektromagnetic waves with a frequency of typically between 60-81 GHz, which means that it is legal to use in the Netherlands~\cite{freq_plan}. The TI package that is used in this project is an all-in-one solution. It contains the Tx and Rx analog circuitry to generate and capture the RF signals. It also contains analog-to-digital converters (ADCs), microcontrollers (MCUs) and digital signal processors (DSPs) to make signal processing possible all on the chip. It also has some custom hardware accelerators build in to speed up standard radar calculations, such as the generation of an fast fourier transforms (FFTs).
+\label{sec:mmwave_tech}
+The type of radar used in this project is the \emph{Texas Instruments IWR6843ISK}, see Figure~\ref{fig:iwr6843isk}. This is a FMCW (Frequency Modulated Continuous Wave) radar. It uses short-wavelength elektromagnetic waves with a frequency of typically between 60-81 GHz, which means that it is legal to use in the Netherlands~\cite{freq_plan}. The TI package that is used in this project is an all-in-one solution. It contains the Tx and Rx analog circuitry to generate and capture the RF signals. It also contains analog-to-digital converters (ADCs), microcontrollers (MCUs) and digital signal processors (DSPs) to make signal processing possible all on the chip. It also has some custom hardware accelerators build in to speed up standard radar calculations, such as the generation of an fast Fourier transforms (FFTs).
 
 \begin{figure}[t]
 \centering
