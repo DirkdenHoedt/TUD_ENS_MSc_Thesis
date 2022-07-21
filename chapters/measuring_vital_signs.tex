@@ -146,7 +146,7 @@ A more visual flow graph can be found in Figure~\ref{fig:iir_visual}. This algor
 \centering
 \begin{tabular}{|r|c|c|}
 \hline
-\textbf{Parameter} & \begin{tabular}[c]{@{}l@{}}\textbf{Minimum\\ frequency}\end{tabular} & \begin{tabular}[c]{@{}l@{}}Maximum \\ frequency\end{tabular} \\ \hline
+\textbf{Parameter} & \begin{tabular}[c]{@{}l@{}}\textbf{Minimum}\\ \textbf{frequency}\end{tabular} & \begin{tabular}[c]{@{}l@{}}\textbf{Maximum} \\ \textbf{frequency}\end{tabular} \\ \hline
 Breathing rate & 0.1 Hz & 0.5 Hz \\
 Heart rate & 0.8 Hz & 2.0 Hz \\ \hline
 \end{tabular}
@@ -157,19 +157,31 @@ Heart rate & 0.8 Hz & 2.0 Hz \\ \hline
 So, there was one input signal, which is now split into two different signals, one for heart and one for breathing. The next step is to concentrate on getting a beats per minute (BPM) reading out of this data.
 
 \subsection{Circular buffers}
-The data from these two separate waveforms are stored in a circular buffer. The length of these buffers can be found in the configuration file in Table~\ref{tab:vs-parameter-config}.
+\label{sec:circular_buffers}
+The data from these two separate waveforms are both stored in a circular buffer. This circular buffer acts like a sliding window. Based on the waveform in this buffer, the breathing rate and heartrate can be estimated. The length of these buffers are being send via the configuration file, as can be seen in Table~\ref{tab:vs-parameter-config}. In this table, all of the vital sign parameters are listed, along with their value and a short explanation.
+
+The buffer length is a balancing act. The more data is in the buffer, the more data can be input to the FFT and the more accurate the result will be. But, the longer the buffer is, the more data gets averaged together. This means that instantaneous changes in heartrate frequency will not be visible in the output data. This project makes use of a breathing waveform buffer of 256 data points. Since a new measurement will be taken every 50 ms:
+
+\begin{equation}
+\label{eq:buffer_length}
+    256 * 50{ms} = 12800{ms} = 12.8 {seconds}
+\end{equation}
+
+which means that a full buffer with breathing data will contain 12.8 seconds of data. Since the heartrate waveform has less amplitude because the chest doesn't move as much and the heartrate is faster than the breathing rate, the buffer is twice as long, resulting in a total buffer length of 25.6 seconds.
+
+Because the heartrate is so fine grained, the heartrate waveform is added in chunks to the buffer. If the chunk is too noisy, for example because the subject is moving a little bit, the chunk gets skipped. This mechanism makes sure that the waveform is as noise free as possible.
 
 \begin{table}[ht]
 \centering
 \begin{tabular}{|r|c|l|}
 \hline
 \textbf{Parameters} & \textbf{Values} & \textbf{Comments} \\ \hline
-Start range (meters) & 0.1 & \begin{tabular}[c]{@{}l@{}}The persons to be detected \\ are expected to be within \\ the start range and the end \\ range from the sensor.\end{tabular} \\ \cline{1-2}
-End range (meters) & 0.7 &  \\ \hline
+Start range (meters) & 0.3 & \begin{tabular}[c]{@{}l@{}}The persons to be detected \\ are expected to be within \\ the start range and the end \\ range from the sensor.\end{tabular} \\ \cline{1-2}
+End range (meters) & 0.9 &  \\ \hline
 Breathing waveform size & 256 & \begin{tabular}[c]{@{}l@{}}Specifies the number of points \\ within the waveforms. The \\ more data points are in the \\ circular buffer, the more data \\ is captured and the more \\ accurate the reading becomes. \\ A downside of using a large \\ waveform size is that it looses \\ the ability to capture \\ instantaneous changes.\end{tabular} \\ \cline{1-2}
-Heartrate waveform size & 320 &  \\ \hline
+Heartrate waveform size & 512 &  \\ \hline
 Rx-antenna to process & 4 & \begin{tabular}[c]{@{}l@{}}Because there are 4 Rx antenna, \\ this value could be max. 4. \\ Because for this implementation \\ the rangeAzimuth-FFT is used, \\ only a value of 4 is allowed.\end{tabular} \\ \hline
-\begin{tabular}[c]{@{}r@{}}Alpha filter value for \\ Breathing waveform\\ energy computation\end{tabular} & 0.1 & \begin{tabular}[c]{@{}l@{}}Alpha filter values for recursive \\ averaging of the waveform \\ energies based on the equation \\ below where x(n) is the current \\ waveform value while E(n) is the \\ energy. \\ E(n)=ax\textasciicircum{}2(n)+(1-a)E(n-1)\end{tabular} \\ \cline{1-2}
+\begin{tabular}[c]{@{}r@{}}Alpha filter value for \\ Breathing waveform\\ energy computation\end{tabular} & 0.1 & \begin{tabular}[c]{@{}l@{}}Alpha filter values for recursive \\ averaging of the waveform \\ energies based on the equation \\ below where $x(n)$ is the current \\ waveform value while $E(n)$ is the \\ energy. \\ $E(n)=\alpha x^2(n)+(1-\alpha)E(n-1)$\end{tabular} \\ \cline{1-2}
 \begin{tabular}[c]{@{}r@{}}Alpha filter value for \\ heartrate waveform\\ energy computation\end{tabular} & 0.05 &  \\ \hline
 \begin{tabular}[c]{@{}r@{}}Scale factor for the \\ breathing waveform\end{tabular} & 300000 & \begin{tabular}[c]{@{}l@{}}Scaling factors to convert \\ waveform values in floating \\ points to 32-bit integers \\ required for the FFT.\end{tabular} \\ \cline{1-2}
 \begin{tabular}[c]{@{}r@{}}Scale factor for the \\ heartrate waveform\end{tabular} & 300000 &  \\ \hline
@@ -177,3 +189,26 @@ Rx-antenna to process & 4 & \begin{tabular}[c]{@{}l@{}}Because there are 4 Rx an
 \caption{Overview of all of the Vital Signs configuration parameters getting send to the chip. These parameters mostly control the sensitivity of the chip. For each parameter, the value used in this project is mentioned and a short explanation. }
 \label{tab:vs-parameter-config}
 \end{table}
+
+\subsection{Peak counting}
+\label{sec:peak_counting}
+The next step in the algorithm is the peak counting. Both waveforms are filtered, this means that for the breathing waveform there is only a peak when the chest is deflated and then inflated. For the heartrate waveform, there would be a peak for each beat of the heart. This peak counting is only a simple algorithm. For each three consecutive values, it checks if the middle value is bigger than the value on the left or on the right. If it is, a peak has been detected. An additional threshold filter is executed over the peaks to eliminate the invalid peaks.
+
+Since it is known how many peaks there are in the waveform, and it is known how much time a full waveform buffer takes (see Section~\ref{sec:circular_buffers}), the BPM could be calculated. For example, 28 peaks are detected. From Section~\ref{sec:circular_buffers} it is known that a full waveform buffer takes 25.6 seconds. With a simple calculation the estimated heartrate will be revealed:
+
+\begin{equation}
+\label{eq:heartrate_calc}
+    \frac{28 * 60}{25.6} \approx 66 {BPM}
+\end{equation}
+
+For the breathing rate, Eq.~\ref{eq:heartrate_calc} can be repeated in a similar way. Let's assume 6 peaks are detected in the breathing waveform. From Section~\ref{sec:circular_buffers} it is known that the full breathing rate waveform is 12.8 seconds, so:
+
+\begin{equation}
+\label{eq:breathrate_calc}
+    \frac{3 * 60}{12.8} \approx 13 {BPM (Breaths Per Minute)}
+\end{equation}
+
+The algorithm is completed.
+
+\subsection{Executing FFTs on the waveforms}
+There is however another option that can be tried. The peak counting method from Section~\ref{sec:peak_counting} is a bit rudimentary. Peaks are detected and filtered, but there could still be false positives or false negatives in this workflow. It would be best to execute a FFT on the waveform and extract the frequency from the FFT that is most present. Luckily, the chip is specialized in calculating FFTs. Each of the two waveforms is put through the FFT generation, and from each FFT output, the biggest peak is extracted. From this biggest peak, the BPM value can be calculated in a similar way as in Eq.~\ref{eq:heartrate_calc} and Eq.~\ref{eq:breathrate_calc}. Because this method is more advanced and less prone to errors, the outcome of the FFT method can in general be better trusted than the outcome of the peak counting method in Section~\ref{sec:peak_counting}. 
