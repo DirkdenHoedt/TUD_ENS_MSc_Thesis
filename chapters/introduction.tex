@@ -6,6 +6,61 @@
 % - Motivation
 % - My contribution
 % So, first the problem, some basic explanation about the technical terms and the the proposed solution. First the problem, then cliff in which implementation details can be found (not mentioned), then the implication of my solution.
+% - vital signs monitoring is important
+% - has various downsides, like the connection with the patient, which could come loose
+% - explanation of mmwave
+% - explanation vs with mmwave
+% - for multiple persons
+% - final solution
+Vital signs monitoring belongs to one of the standard activities nurses perform to patients in a hospital. This has a very good reason, vital signs can give a good estimation of the state of a patient \cite{mok2015vital}. The most common methods to measure a patients vital signs require physical contact with the patient. A sensor has contact with the skin, and a wire runs from the sensor to another device which shows the heart rate. There are some downsides to this method of measuring. The sensor is always attached, so it could become a discomfort to the patient. Also, the mobility is limited because of the connected wires. Another problem could be that the sensor falls off. When this happens the device goes into an alarm state and produces a loud beep, which is annoying for the patient, especially at night. The nurse must also come and connect the sensor back to the patient.
+
+Millimeter wave radar technology is already in use in the automotive industry \cite{mmwave_automotive}. This type of radar can help to detect other cars on the road. The radar module has antennae for sending the radar waves, and antennae for receiving the radar waves. A property that differentiates millimeter wave (mmWave) radar from other types of radar is the frequency of the transmitted signals. A typical mmWave radar can operate in the 30-300 GHz range. In this range, the length of one wave can be measured in millimeters, which explains the name of this radar type. This radar can detect objects on the road, even in difficult (weather) conditions. 
+
+MmWave radar can not only be used in the automotive industry, it could also be potentially used to estimate the vital signs of a person. The radar signals reflect on large bodies of water. 70\% of the human body consists of water. This means that the mmWave radar signals can reflect on humans, a property that can be exploited to implement the vital signs estimation. When a person breaths, its chest moves up and down. The same goes for the beating of the heart. Every time the heart beats, the chest moves a tiny amount. The mmWave sensor can be setup in such a way that it can detect even those small vibrations of the chest. Using signal processing, those vibration signals can be transformed into a heart rate and a respiration rate. 
+
+Using this method solves various downsides compared to the conventional way of measuring someones vital signs. The main advantage is that the sensor is non-invasive, it has no contact with the patient. The patient doesn't even need to know that he is being monitored. There are no cables connected to the patient which limit the movement, and no sensors which could fall of the body. 
+
+Using a pulse-oxymeter, the most common used sensor to measure someones vital signs, only one person can be measured at the same time. An advantage of the mmWave sensor is that is has a wide field of view. This could open the possibility of measuring the vital signs of multiple persons at the same time. For every person in the field of view of the sensor, a vital signs estimation can be performed.
+
+At the end of this project, the mmWave sensor is programmed in such a way that it can detect persons, and estimate the vital signs of one or more persons in the field of view of the sensors. Also, the accuracy of this sensor will be assessed.
 
 \section{Problem statement}
 \label{sec:problem_statement}
+The system must be able to estimate the vital signs of multiple persons in reach of the sensor at the same time. There already are some projects which implement this function, but each has its own downsides. For some projects, the sensor is limited to only measuring one person at the same time. Other projects do succeed in estimating the vital signs of multiple persons at the same time, but only using a post-processing technique. This is not an optimal solution, because most of the time, the patients vital signs are needed right away. 
+
+The goal of this thesis is to implement a system which can estimate the vital signs of multiple persons at once in real-time. Also, a thorough validation will be performed on the resulting system, to see if this solution can compete with the existing vital signs estimation solutions.
+
+\section{Objectives}
+For the implementation of this project, the Texas Instruments IWR6843ISK is used. This is a mmWave sensor which meets all of the technical requirements set for this project. Firmware for this module can be programmed using an IDE provided by Texas Instruments.
+
+From the inital problem statement, a set of technical requirements were established, which you can find below:
+
+\begin{enumerate}
+    \item The sensor must be able to generate a heatmap from the radar data of the surrounding area.
+    \item The sensor must be able to detect one or multiple persons in this heatmap.
+    \item The sensor must be able to estimate the vital signs for up to four detected persons at the same time.
+    \item The sensor must compute these vital sign estimations in real-time.
+    \item The sensor must be able to track the measured person, such that the measuring continues even if the person moves to another location.
+    \item The outcome of the sensor must be displayed in a clear way using a GUI on a computer.
+    \item The project must be tested against a trusted measurement, to assess the accuracy of the project.
+    \item The project must be tested against a range of different persons, to see if the project performs the same on different kinds of persons.
+\end{enumerate}
+
+\section{Outline}
+In the introduction, which is Chapter~\ref{chp:introduction}, a brief introduction will be given about the project, along with the problem description and the objectives of this thesis.
+
+Chapter~\ref{chp:background} discusses the background information required to have a good understanding about the fundamental concepts this project is build on. It contains the explanation of the existing building blocks which are used to build this project, but also related work to this project, with the pros and cons of each work listed.
+
+Chapter~\ref{chp:people_detection} focuses on the dynamic people detection algorithm. This algorithm detects persons in view of the sensor, and performs basic tracking to keep the persons in view and make sure that the vital signs estimation algorithms get the best possible data to work with.
+
+Chapter~\ref{chp:measuring_vital_signs} dives into the actual vital signs estimation functionality of this project. The algorithms used are explained and the program flow specific to the vital signs estimation will be visualized.
+
+Chapter~\ref{chp:realtime_implementation} discusses the real-time implementation of the system. The chip used in this project will be examined and a overview of the program flow of the whole project will be discussed and visualized.
+
+Chapter~\ref{chp:validation} is the validation chapter. Now that a prototype has been build using the knowledge of the previous chapters, the prototype has to be validated against a trusted measurement to assess the accuracy of the prototype.
+
+The last chapter, chapter~\ref{chp:conclusions}, is the conclusion. There are also pointers provided for future work.
+
+During this project, a lot of time has been spend on getting Tx beamforming to work. Sadly, while it should have worked well in theory, in practice it did not perform as expected. Appendix~\ref{app:appendix} goes into more detail about the idea behind Tx beamforming, and it is explained why this implementation ultimately failed.
+
+% \todo{Add the appendix?}

@@ -83,7 +83,7 @@
 \usepackage[plainpages=false]{hyperref} 
 
 % Information that will be filled in at various points in the report
-\newcommand{\reportTitle}{Dynamic Vital Sign estimation for multiple people using mmWave technology}
+\newcommand{\reportTitle}{Dynamic Vital Sign estimation for Multiple Persons using mmWave technology}
 \newcommand{\reportAuthor}{Dirk den Hoedt} % Please put your full and official name here: no abbreviations (and to Dutch students: geen roepnamen)
 \newcommand{\studentNumber}{4624300}
 \newcommand{\reportEmailTUD}{d.denhoedt@student.tudelft.nl}
@@ -91,8 +91,8 @@
 \newcommand{\reportUrlEmailTUD}{\href{mailto:\reportEmailTUD}{\reportEmailTUD}}
 \newcommand{\reportUrlEmailNonTUD}{\href{mailto:\reportEmailNonTUD}{\reportEmailNonTUD}}
 \newcommand{\reportMSC}{Embedded Systems} % Examples are {Embedded Systems} {Computer Engineering} {Computer Science} or {Electrical Engineering}
-\newcommand{\reportDate}{01-09-2022 (TBD)}
-\newcommand{\presentationDate}{16-09-2022 (TBD)}
+\newcommand{\reportDate}{01-10-2022}
+\newcommand{\presentationDate}{14-10-2022}
 \newcommand{\graduationCommittee}{
 Marco Zuniga (chairman) & Delft University of Technology \\
 Francesco Fioranelli & Delft University of Technology \\
@@ -116,9 +116,13 @@ Tom Goos & Erasmus MC \\
 % prof.\,dr.\,Koen Langendoen (chairman) & Delft University of Technology \\ 
 % dr.\,Przemys{\l}aw Pawe{\l}czak & Delft University of Technology \\ 
 
-\newcommand{\reportAbstract}{WRITE YOUR ABSTRACT HERE}
+\newcommand{\reportAbstract}{When a patient is in a hospital, it is very important to monitor its vital signs. Doctors and nurses use this information to assess the condition of the patient. Most of the existing vital signs measurement devices need physical contact with the patient. This thesis focuses on a non-contact vital signs estimation method. Using a mmWave radar, one or more persons in the view of the sensor are being monitored. This monitoring consists of finding the chest region of a person, and monitoring this chest for vibrations. These vibrations are caused by breathing in and out, and the beating of the heart. Using signal processing, these vibrations can be converted to a heart rate and a respiration rate. 
 
-\newcommand{\reportKeywords}{LIST YOUR KEYWORDS HERE}
+This thesis is about getting insight in the already available options regarding vital signs monitoring, coding the Texas Instruments IWR6843ISK mmWave radar module to estimate the vital signs of multiple persons and validating this project against trusted vital signs monitors.
+
+The implemented solution which followed from is project is able to track multiple persons inside the radar view, and is able to measure the vital signs of these persons in real-time. The mean accuracy gained for the heart rate estimation is 10.46\%, the mean accuracy gained for the respiration rate estimation is 7.91\%.}
+
+\newcommand{\reportKeywords}{vital signs, IWR6843ISK, vital signs estimation, signal processing, embedded systems, real-time, Texas Instruments, monitoring, heart rate, respiration rate}
 
 % Did the thesis lead to a paper? 
 % e.g. The work presented in this thesis has lead to a paper which has been submitted to a conference for publication, pending peer-review
@@ -209,7 +213,7 @@ Tom Goos & Erasmus MC \\
 \include{chapters/conclusions}
 
 % Create future work
-\include{chapters/futurework}
+% \include{chapters/futurework} --> added directly after the conclusion in the conclusion chapter
 
 % Create bibliography
 \bibliographystyle{plain} % Please do not change the style of bibliography (yes, it should be `plain`)
