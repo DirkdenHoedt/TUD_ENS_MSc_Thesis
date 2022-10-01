@@ -13,7 +13,14 @@ Now that the prototype has been build, it needs to be evaluated to assess the ac
 To validate this project correctly, the variables that are worked with must be established. With these variables in mind, some can be changed while others remain the same. In this way, it can be determined which variable has an impact on the accuracy of the sensor. 
 
 \subsection{Recorded variables}
-The recorded variables are the measurements that are being taken to measure the vital signs for a person. These measurements are coming from the sensor, but also from other devices to validate the measurements from the sensor. The sensor itself measures the heart rate and respiration rate from one or multiple persons. But not only this information gets send back to the computer. To make the visualization on the computer a bit better, different waveforms are also send to the computer. There is one unfiltered waveform, a heart rate waveform and a respiration rate waveform. The unfiltered waveform is the phase of the radar data for the bin in which the measured person is residing. The heart rate and respiration rate waveforms are the waveforms from which the heart rate and respiration rate can be determined. These waveforms are being generated after the filtering of the phase signal, see also Section~\ref{sec:vit_signs_est}. 
+The recorded variables are the measurements that are being taken to measure the vital signs for a person. These measurements are coming from the sensor, but also from other devices to validate the measurements from the sensor. The sensor itself measures the heart rate and respiration rate from one or multiple persons. But not only this information gets send back to the computer. To make the visualization on the computer a bit better, different waveforms are also send to the computer. There is one unfiltered waveform, a heart rate waveform and a respiration rate waveform. The unfiltered waveform is the phase of the radar data for the bin in which the measured person is residing. The heart rate and respiration rate waveforms are the waveforms from which the heart rate and respiration rate can be determined. These waveforms are being generated after the filtering of the phase signal, see also Section~\ref{sec:vit_signs_est}. For a snapshot of the GUI on the computer, see Figure~\ref{fig:gui_computer}.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=.95\textwidth]{figures/validation/4personen_testen_crop2.png}
+    \caption{Snapshot of the GUI on the computer. On the left is the heatmap with the detected persons, on the right for each person the heart rate waveform in blue and the respiration waveform in red.}
+    \label{fig:gui_computer}
+\end{figure}
 
 \subsubsection{Heart rate validation}
 \label{sec:heartrate_validation}
@@ -21,14 +28,14 @@ The sensor does output a heart rate, but there also needs to be a method to vali
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=.6\textwidth]{figures/validation/nonin_9600.jpg}
+    \includegraphics[width=.4\textwidth]{figures/validation/nonin_9600.jpg}
     \caption{The Nonin 9600 SpO2 sensor used as validation in this project.}
     \label{fig:nonin_9600}
 \end{figure}
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=.4\textwidth]{figures/validation/ihealth.jpg}
+    \includegraphics[width=.3\textwidth]{figures/validation/ihealth.jpg}
     \caption{The iHealth Air Pulse Oximeter used as validation in this project.}
     \label{fig:ihealth}
 \end{figure}
@@ -113,7 +120,7 @@ All tests have a duration of 5 minutes, or 300 seconds. The amount of 300 second
 \end{figure}
 
 \section{Test subjects}
-To properly validate the sensor, it has to be tested on persons. These test subjects were selected to reflect the validation plan. Most of the test subjects were colleges, family or friends. The test subjects are recorded for 5 minutes in a row, and along with the measurement data, additional metadata of the test subjects were recorded, as described in Section~\ref{sec:person_metrics}. This data includes age, gender, weight, length and additional comments. Using the weight and length, the BMI can be calculated. This data can be found in Table~\ref{tab:persons-info}.
+To properly validate the sensor, it has to be tested on persons. These test subjects were selected to reflect the validation plan. The test subjects are recorded for 5 minutes in a row, and along with the measurement data, additional metadata of the test subjects were recorded, as described in Section~\ref{sec:person_metrics}. This data includes age, gender, weight, length and additional comments. Using the weight and length, the BMI can be calculated. This data can be found in Table~\ref{tab:persons-info}.
 
 Because the data which is being recorded is highly sensitive medical data, the names of the persons are anonymized. All of the persons also have signed an informed consent. These consent forms are stored in the archives of the 4TU Centre of Research Data, along with the measurement data itself in an encrypted form. 
 % \todo{Add the informed consent forms to the appendix.}. 
@@ -147,7 +154,7 @@ P16 & 23 & male & 68 & 1.76 & 21 &  \\\hline
 \section{Results}
 \subsection{One person validation}
 \label{sec:one_pers_validation}
-The validation of the vital signs of one person in front of the sensor is an important part of the validation process. Because the vital sign estimation of one person is the same process as the vital sign estimation of multiple persons, the validation of one person already says a lot about the validation of multiple persons. To validate the general accuracy of the project, 12 persons have been tested, all individually. The test setup can be found in Section~\ref{sec:test_setup}. 
+The validation of the vital signs of one person in front of the sensor is an important part of the validation process. Because the vital sign estimation of one person is the same process as the vital sign estimation of multiple persons, the validation of one person was used to partially validate multiple person vital signs. To validate the general accuracy of the project, 12 persons have been tested, all individually. The test setup can be found in Section~\ref{sec:test_setup}. 
 
 For each recorded heart rate and respiration rate from the IWR6843, it is compared against the control heart rate and respiration rate. For each test subject, the average deviation percentage is calculated. The deviation percentage is how much the measurement from the IWR6843 differs from the control measurement. The percentage is calculated using this formula:
 
@@ -156,7 +163,7 @@ For each recorded heart rate and respiration rate from the IWR6843, it is compar
     \label{eq:deviation_calculation}
 \end{equation}
 
-These averaged percentages can be found in Table~\ref{tab:one-person-results}. The measurements for each test subject can also be plotted, but that takes up too much space. So, only the most accurate measurement and the least accurate measurement are drawn in this thesis. For the most accurate result, see Figure~\ref{fig:roy_meas}. For the least accurate result, see Figure~\ref{fig:tim_meas}.
+These averaged percentages can be found in Table~\ref{tab:one-person-results}. The most accurate measurement and the least accurate measurement are drawn in this thesis. For the most accurate result, see Figure~\ref{fig:roy_meas}. For the least accurate result, see Figure~\ref{fig:tim_meas}.
 % \todo{Incorporate averages from the whole measurement?}
 % \todo{Replace with P13?}
 
@@ -178,9 +185,11 @@ Another way to visualize the data is to generate a Bland-Altman plot. This plot 
     \label{fig:ba_one_breath}
 \end{figure}
 
-The average heart rate estimation accuracy of the sensor is 10.86\%. This is mainly due to four persons where the measurement accuracy was way worse compared to the other 7 measured persons. For three of the four persons a reason can be found for this lesser accuracy, see also the remarks in Table~\ref{tab:persons-info}. \emph{P4} had multiple layers of thick clothing on, which could distort the signal. \emph{P5} was not detected by the people detection algorithm very well, so the quality of the data to do the vital signs estimation on was not very high. \emph{P9} has lung problems, which express in a higher and more unstable respiration rate and heart rate. For the lower accuracy of \emph{P13} there is no clear explanation, except an higher BMI, which will be discussed in Section~\ref{sec:weight_res}. Taking out these four lower accuracy's, the average accuracy drops down to 3.30\%.
+The average heart rate estimation accuracy of the sensor is 10.86\%. This is mainly due to four persons where the measurement accuracy was worse compared to the other 7 measured persons. For three of the four persons a reason can be found for this lesser accuracy, see also the remarks in Table~\ref{tab:persons-info}. \emph{P4} had multiple layers of thick clothing on, which could distort the signal. \emph{P5} was not detected by the people detection algorithm very well, so the quality of the data to do the vital signs estimation on was not very high. \emph{P9} has lung problems, which express in a higher and more unstable respiration rate and heart rate. For the lower accuracy of \emph{P13} there is no clear explanation, except an higher BMI, which will be discussed in Section~\ref{sec:weight_res}. Taking out these four lower accuracy's, the average accuracy drops down to 3.30\%.
 
 The respiration accuracy averaged around all the persons tested is 7.61\%. But, when looking at the breathing rate numbers in Table~\ref{tab:one-person-results_2}, the difference between the control- and the sensor measurement is either 0 or 1. Only at \emph{P5} there exists a difference in measurements of 2, but this could again be due to the people detection algorithm not detecting the person properly. Since the control measurements are counted by the persons themselves, part of this accuracy number could be due to miscounting.
+
+To conclude, the one person vital signs estimation works. Especially the respiration rate is exactly right or only one off. The heart rate estimation accuracy is around 10\%. The reason for this lower accuracy could be that the heart rate is faster than the respiration rate and the magnitude of the vibrations is smaller. This accuracy could be improved by tweaking the algorithms and the algorithm parameters.
 
 \begin{table}[ht]
 \centering
@@ -452,6 +461,6 @@ The mean difference between the radar estimation and the control measurement for
 % \todo{Conclusion?}
 
 \section{Evaluation}
-The validation part of this project took a lot more time than expected. A lot of organization needs to be done beforehand to get all the test subjects at the right time at the right location. A lot of time has also been spend in analyzing and generating results from all of these measurements. 
+When observing the result from the one person-, two person- and four person validation, it could be noted that the accuracy reduces when there are more persons in the sensor view. This could have multiple reasons. Because there are more persons in the field of view of the radar, more noise is introduced. The test subjects all constantly move very slightly, this could introduce noise in the very sensitive phase information. Another option could be that the phase changes of the different persons interfere with each other. More knowledge about radar theory could probably substantiate that hypothesis.
 
-Taking into account all of the measurements from the 16 test subjects in the different configurations, this gives a good representation of the accuracy of the prototype of this project. The algorithms could be tuned better to make the sensor measurements more stable and generally more accurate, but the main goal of this project is to see if the algorithms can be put on the sensor chip itself, and if it would hold up against the large stream of radar data which was coming in. This goal has been reached, because the sensor never missed a timing deadline during the validation phase. 
+Taking into account all of the measurements from the 16 test subjects in the different configurations, this gives a good representation of the accuracy of the prototype of this project. The algorithms could be tuned better to make the sensor measurements more stable and generally more accurate, but the main goal of this project is to see if the algorithms can be put on the sensor chip itself, and if it would hold up against the large stream of radar data which was coming in. This goal has been reached, because the sensor never missed a timing deadline during the validation phase.
