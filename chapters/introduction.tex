@@ -12,6 +12,7 @@
 % - explanation vs with mmwave
 % - for multiple persons
 % - final solution
+\section{Motivation}
 Vital signs monitoring belongs to one of the standard activities nurses perform to patients in a hospital. This has a very good reason, vital signs can give a good estimation of the state of a patient \cite{mok2015vital}. The most common methods to measure a patients vital signs require physical contact with the patient. A sensor has contact with the skin, and a wire runs from the sensor to another device which shows the heart rate. There are some downsides to this method of measuring. The sensor is always attached, so it could become a discomfort to the patient. Also, the mobility is limited because of the connected wires. Another problem could be that the sensor falls off. When this happens the device goes into an alarm state and produces a loud beep, which is annoying for the patient, especially at night. The nurse must also come and connect the sensor back to the patient.
 
 Millimeter wave radar technology is already in use in the automotive industry \cite{mmwave_automotive}. This type of radar can help to detect other cars on the road. The radar module has antennae for sending the radar waves, and antennae for receiving the radar waves. A property that differentiates millimeter wave (mmWave) radar from other types of radar is the frequency of the transmitted signals. A typical mmWave radar can operate in the 30-300 GHz range. In this range, the length of one wave can be measured in millimeters, which explains the name of this radar type. This radar can detect objects on the road, even in difficult (weather) conditions. 
@@ -22,7 +23,7 @@ Using this method solves various downsides compared to the conventional way of m
 
 Depending on the antenna, this technology can have a wide field of view, opening up the possibility to measure multiple people using one radar module. For every person in the field of view of the sensor, a vital signs estimation can be performed. The benefit of this is that multiple persons can be monitored without investing in more hardware.
 
-Using a FCMW radar for vital signs estimation also has its downsides. Radar data is very sensitive to noise, so it can only be used in a low noise environment. Because the sensor is contact-less, and the radar beams are invisible, the signal could be blocked by other persons or objects. Another downside that it is difficult to make distinctions between different persons in the radar data. This makes it hard for the sensor to figure out which vital signs belong to which persons.
+Using a FMCW radar for vital signs estimation also has its downsides. Radar data is very sensitive to noise, so it can only be used in a low noise environment. Because the sensor is contact-less, and the radar beams are invisible, the signal could be blocked by other persons or objects. Another downside that it is difficult to make distinctions between different persons in the radar data. This makes it hard for the sensor to figure out which vital signs belong to which persons.
 
 The aim of this project is to have a mmWave sensor, which is programmed in such a way that it can detect persons, and measure the vital signs of one or more persons in the field of view of the sensor. All of these calculations will be done on the chip, and not on an external computer. Also, the accuracy of this sensor will be assessed.
 
@@ -33,9 +34,10 @@ The system must be able to measure the vital signs of multiple persons in reach 
 The goal of this thesis is to implement a system which can measure the vital signs of multiple persons at once in real-time. Also, a thorough validation will be performed on the resulting system, to see if this solution can compete with the existing vital signs measuring solutions.
 
 \section{Objectives}
+\label{sec:objectives}
 For the implementation of this project, the Texas Instruments IWR6843ISK is used. This is a mmWave sensor which meets all of the technical requirements set for this project. Firmware for this module can be programmed using an IDE (Integrated Development Environment) provided by Texas Instruments.
 
-From the inital problem statement, a set of technical requirements were established, which you can find below:
+From the initial problem statement, a set of technical requirements were established, which you can find below:
 
 \begin{enumerate}
     \item The sensor must be able to generate a heatmap from the radar data of the surrounding area.

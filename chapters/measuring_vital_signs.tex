@@ -126,7 +126,7 @@ To do separate analysis on the respiration rate and the heart rate, the source w
 
 IIR filters are one of two common digital signal processing (DSP) filter types~\cite{iir_info_website}. IIR stands for Infinite Impulse Response. The other common type is the Finite Impulse Response filter. These types of filters modify the frequency content of a signal. FIR filters and IIR filters are both part of the Linear Time Invariant (LTI) filter group. LTI filters can modify the phase and the amplitude of certain frequencies of a signal. These filters are most commonly used to remove undesired frequencies from an input signal. For example: the antenna of a car receives all of the radio stations at once, from 88 MHz to 108 MHz. To make it possible to only listen to a station at for example 89.9 MHz, a filter can be used to only allow the signal with a frequency of 89.9 MHz. The main difference between FIR and IIR filters, is that the IIR filters make use of a feedback mechanism. If the IIR filter is first zero and receives a 1 as an input, the filter output can (theoretically) never reach zero again. A FIR filter works with a certain amount of stages, and is able to reach zero after a certain amount of time. For this project an IIR filter is chosen because it is more efficient to implement for embedded devices, since it uses less memory and calculations compared to a similar FIR algorithm~\cite{iir_faq_website}. 
 
-The IIR filter used in this project is an biquad cascade IIR algorithm. Biquad stands for biquadratic, which refers to the Z-domain, where the transfer function is a ratio of two quadratic functions:
+The IIR filter used in this project is an biquad cascade IIR algorithm. Biquad stands for bi-quadratic, which refers to the Z-domain, where the transfer function is a ratio of two quadratic functions:
 
 \begin{equation}
 \label{eq:biquad_filter_z}
@@ -147,7 +147,7 @@ The filter used in this project can be written down as an equation:
 \label{fig:iir_visual}
 \end{figure}
 
-A more visual flow graph can be found in Figure~\ref{fig:iir_visual}. This algorithm is translated in C code. This filter is executed on the input signal two times, once for the respiration rate waveform and once for the heart rate waveform. The filter is therefore configured like a bandpass filter. It will remove frequencies which are not in the allowed frequency range. The frequency ranges that were used in this project can be found in Table~\ref{tab:freq_ranges}.
+A more visual flow graph can be found in Figure~\ref{fig:iir_visual}. This algorithm is translated in C code. This filter is executed on the input signal two times, once for the respiration rate waveform and once for the heart rate waveform. The filter is therefore configured like a band-pass filter. It will remove frequencies which are not in the allowed frequency range. The frequency ranges that were used in this project can be found in Table~\ref{tab:freq_ranges}.
 
 \begin{table}[ht]
 \centering

@@ -24,12 +24,12 @@ The recorded variables are the measurements that are being taken to measure the 
 
 \subsubsection{Heart rate validation}
 \label{sec:heartrate_validation}
-The sensor does output a heart rate, but there also needs to be a method to validate this heart rate measurement. This is done by also connecting the measured person to an SpO2 sensor. The exact workings of this sensor are explained in Section~\ref{sec:spo2_sensors}. This sensor outputs two data streams: heart rate and blood oxygen levels. The only variable which is used for this project is the heart rate. The SpO2 sensor used in this project is the \emph{Nonin 9600}, see also Figure~\ref{fig:nonin_9600}. This device has been chosen for various reasons. It is a medical grade device, which means that it is build following a high standard, and the measurements outputted by the sensor has very low tolerances. This device also has a serial port. Each second, the device outputs the heart rate and blood oxygen level to the serial bus. This data stream can be captured using a RS232 to USB converter, and saved to a file for later use. The only problem is that there are only two devices available. This is enough for a thorough evaluation of the vital signs estimation and also for measurements of one or two persons at the same time, but not for four persons. During the test with measuring four persons at the same time, two other SpO2 sensors were used, the \emph{iHealth Air Pulse Oximeter}, see Figure~\ref{fig:ihealth}. These sensors don't have a connection available to send the data to a computer, so the sensors are read every minute, and the reading from the sensor is recorded. 
+The sensor does output a heart rate, but there also needs to be a method to validate this heart rate measurement. This is done by also connecting the measured person to a pulse oximeter. The exact workings of this sensor are explained in Section~\ref{sec:spo2_sensors}. This sensor outputs two data streams: heart rate and blood oxygen levels. The only variable which is used for this project is the heart rate. The pulse oximeter used in this project is the \emph{Nonin 9600}, see also Figure~\ref{fig:nonin_9600}. This device has been chosen for various reasons. It is a medical grade device, which means that it is build following a high standard, and the measurements outputted by the sensor has very low tolerances. This device also has a serial port. Each second, the device outputs the heart rate and blood oxygen level to the serial bus. This data stream can be captured using a RS232 to USB converter, and saved to a file for later use. The only problem is that there are only two devices available. This is enough for a thorough evaluation of the vital signs estimation and also for measurements of one or two persons at the same time, but not for four persons. During the test with measuring four persons at the same time, two other pulse oximeters were used, the \emph{iHealth Air Pulse Oximeter}, see Figure~\ref{fig:ihealth}. These sensors don't have a connection available to send the data to a computer, so the sensors are read every minute, and the reading from the sensor is recorded. 
 
 \begin{figure}[t]
     \centering
     \includegraphics[width=.4\textwidth]{figures/validation/nonin_9600.jpg}
-    \caption{The Nonin 9600 SpO2 sensor used as validation in this project.}
+    \caption{The Nonin 9600 pulse oximeter used as validation in this project.}
     \label{fig:nonin_9600}
 \end{figure}
 
@@ -77,7 +77,7 @@ The persons for which the vital signs are measured, all have different attribute
 
 \section{Testing setup}
 \label{sec:test_setup}
-The testing environment is kept as consistent as possible. All of the equipment is placed on a desk, and in front of the desk one or more chairs are placed. The IWR6843ISK is set on the desk, with the antennae pointing to the chairs. Next to the IWR6843ISK the two Nonin 9600 SpO2 sensors are placed, since the sensor leads are not that long. The IWR6843ISK and the two SpO2 sensors are connected to the computer via serial buses. The computer is operated by the operator. See also Figure~\ref{fig:test_setup} and Figure~\ref{fig:test_setup_pic}.
+The testing environment is kept as consistent as possible. All of the equipment is placed on a desk, and in front of the desk one or more chairs are placed. The IWR6843ISK is set on the desk, with the antennae pointing to the chairs. Next to the IWR6843ISK the two Nonin 9600 pulse oximeters are placed, since the sensor leads are not that long. The IWR6843ISK and the two SpO2 sensors are connected to the computer via serial buses. The computer is operated by the operator. See also Figure~\ref{fig:test_setup} and Figure~\ref{fig:test_setup_pic}.
 
 All tests have a duration of 5 minutes, or 300 seconds. The amount of 300 seconds has been chosen for multiple reasons. It gives the sensor time to stabilize. Because multiple buffers are used inside of the sensor, it takes some time before the buffers are filled with valid measurement data. Because the test subjects have walked to the testing location, it also gives the heart rate of the test subjects some time to settle in the heart rate during rest, which is the most stable.
 
@@ -135,10 +135,10 @@ P2 & 61 & female & 78 & 1.60 & 30 &  \\
 P3 & 32 & male & 75 & 1.85 & 21 &  \\
 P4 & 25 & male & 80 & 1.80 & 24 & \begin{tabular}[c]{@{}l@{}}Wore big layers \\ of clothing\end{tabular} \\
 P5 & 26 & male & 100 & 1.80 & 30 & \begin{tabular}[c]{@{}l@{}}P5 was not detected \\ very well by the sensor\end{tabular} \\
-P6 & 27 & male & 70 & 1.75 & 22 & Has a high metabolism \\
-P7 & 23 & male & 90 & 1.82 & 27 & \begin{tabular}[c]{@{}l@{}}Was a bit restless during \\ testing, has a big heart\end{tabular} \\
+P6 & 27 & male & 70 & 1.75 & 22 &  \\
+P7 & 23 & male & 90 & 1.82 & 27 & \begin{tabular}[c]{@{}l@{}}Was a bit restless during \\ testing\end{tabular} \\
 P8 & 43 & male & 80 & 1.82 & 24 &  \\
-P9 & 49 & male & 85 & 1.85 & 24 & Lung problems \\
+P9 & 49 & male & 85 & 1.85 & 24 &  \\
 P10 & 35 & male & 86 & 1.77 & 27 &  \\
 P11 & 49 & male & 92 & 1.80 & 28 &  \\
 P12 & 23 & female & 62 & 1.75 & 20 &  \\
@@ -156,10 +156,10 @@ P16 & 23 & male & 68 & 1.76 & 21 &  \\\hline
 \label{sec:one_pers_validation}
 The validation of the vital signs of one person in front of the sensor is an important part of the validation process. Because the vital sign estimation of one person is the same process as the vital sign estimation of multiple persons, the validation of one person was used to partially validate multiple person vital signs. To validate the general accuracy of the project, 12 persons have been tested, all individually. The test setup can be found in Section~\ref{sec:test_setup}. 
 
-For each recorded heart rate and respiration rate from the IWR6843, it is compared against the control heart rate and respiration rate. For each test subject, the average deviation percentage is calculated. The deviation percentage is how much the measurement from the IWR6843 differs from the control measurement. The percentage is calculated using this formula:
+For each recorded heart rate and respiration rate from the IWR6843, it is compared against the control heart rate and respiration rate. For each test subject, the average accuracy percentage is calculated. The accuracy percentage is how much the measurement from the IWR6843 differs from the control measurement. The percentage is calculated using the formula in Eq.~\ref{eq:deviation_calculation}.
 
 \begin{equation}
-    deviation = abs(M_{IWR6843} - M_{control}) / M_{control}
+    accuracy = abs(M_{IWR6843} - M_{control}) / M_{control}
     \label{eq:deviation_calculation}
 \end{equation}
 
@@ -167,7 +167,7 @@ These averaged percentages can be found in Table~\ref{tab:one-person-results}. T
 % \todo{Incorporate averages from the whole measurement?}
 % \todo{Replace with P13?}
 
-In later sections, more details are provided of the relation between personal variables and the detected accuracy of the measurements. For now, only observations are done on individual measurements. The first observation is the difference in deviation between Table~\ref{tab:one-person-results} and Table~\ref{tab:one-person-results_2}. This is because the percentage in Table~\ref{tab:one-person-results} is calculated for each measurement. For 300 seconds of recording, 1200 measurements are gathered. These 1200 percentages get averaged into one percentage. For Table~\ref{tab:one-person-results_2}, the measurments from the control and from the IWR6843 are first averaged, and then the deviation percentage is calculated. Because the measurements from the IWR6843 are quite noisy, the deviation percentages in Table~\ref{tab:one-person-results} are higher than Table~\ref{tab:one-person-results_2}.
+In later sections, more details are provided of the relation between personal variables and the detected accuracy of the measurements. For now, only observations are done on individual measurements. The first observation is the difference in deviation between Table~\ref{tab:one-person-results} and Table~\ref{tab:one-person-results_2}. This is because the percentage in Table~\ref{tab:one-person-results} is calculated for each measurement. For 300 seconds of recording, 1200 measurements are gathered. These 1200 percentages get averaged into one percentage. For Table~\ref{tab:one-person-results_2}, the measurements from the control and from the IWR6843 are first averaged, and then the deviation percentage is calculated. Because the measurements from the IWR6843 are quite noisy, the deviation percentages in Table~\ref{tab:one-person-results} are higher than Table~\ref{tab:one-person-results_2}.
 
 Another way to visualize the data is to generate a Bland-Altman plot. This plot is specifically designed to plot out the agreement of two different measurement devices. In the case of this project, that would be the radar measurement and the control measurement. In this graph, the mean difference and the standard deviation between the two measurement types are being given. The Bland-Altman plot for the heart rate comparison of all one person validation tests can be found in Figure~\ref{fig:ba_one_heart}. The Bland-Altman plot for the respiration rate can be found in Figure~\ref{fig:ba_one_breath}.
 
